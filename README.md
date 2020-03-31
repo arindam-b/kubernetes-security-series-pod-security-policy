@@ -64,7 +64,7 @@ But below deployment will not work as it does not ave build-robot service accoun
 
 Reference screen shot 1 & 2
 
-## seccomp  - it did not work
+## seccomp
 
 It is secure compute mode.
 
