@@ -1,0 +1,24 @@
+# Bind the ClusterRole to the desired set of service accounts.
+# Policies should typically be bound to service accounts in a namespace.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: my-rolebinding
+  namespace: my-namespace
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: my-clusterrole
+subjects: # The subjects field specifies to which accounts the ClusterRole is bound.
+# Example: All service accounts in my-namespace
+#- apiGroup: rbac.authorization.k8s.io
+#  kind: Group
+#  name: system:serviceaccounts # system:serviceaccounts This means all service account in the cluster
+# Example: A specific service account in my-namespace
+- kind: ServiceAccount 
+  name: build-robot   # <authorized service account name>
+  namespace: my-namespace # individual ServiceAccount, default, which specifies the default service account in the namespace
+# Authorize specific users (not recommended):
+#- kind: User
+#  apiGroup: rbac.authorization.k8s.io
+#  name: banerjee1.arindam@gmail.com

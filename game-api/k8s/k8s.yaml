@@ -1,0 +1,59 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: game-api
+  namespace: my-namespace
+  labels:
+    app: game-api
+    role: backendapi
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: docker/default	
+spec:
+  replicas: 2
+  strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 2 # maxSurge is the maximum number of new pods that will be created at a time
+        maxUnavailable: 1 # maxUnavailable is the maximum number of old pods that will be deleted at a time 
+  template:
+    metadata:
+      labels:
+        app: game-api
+        role: backendapi
+    spec:
+      containers:
+        - name: game-api
+          image: "arindambanerjee/game-api:v1"
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8080
+          livenessProbe:
+                httpGet:
+                    path: /
+                    port: 8080
+                initialDelaySeconds: 15
+                timeoutSeconds: 30 
+          readinessProbe:
+                httpGet:
+                    path: /
+                    port: 8080
+                initialDelaySeconds: 15
+                timeoutSeconds: 30
+      serviceAccountName: build-robot
+      automountServiceAccountToken: false          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: game-api
+  namespace: my-namespace  
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+      name: http 
+  selector:
+    app: game-api
+    role: backendapi
+  type: LoadBalancer
