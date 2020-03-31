@@ -2,11 +2,12 @@ apiVersion: extensions/v1beta1
 kind: PodSecurityPolicy
 metadata:
   name: my-psp
+  namespace: my-namespace
 spec:
   privileged: false  # Prevents creation of privileged Pods
   allowPrivilegeEscalation: false # Prevents escalations to root
   allowedCapabilities:
-  - *
+  - "*"
   runAsUser:
    rule: 'MustRunAsNonRoot' # Containers to run as non root
   seLinux:

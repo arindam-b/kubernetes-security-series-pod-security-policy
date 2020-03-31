@@ -20,7 +20,7 @@ gcloud beta container clusters update my-cluster --enable-pod-security-policy
 
 ### The following PodSecurityPolicy, my-psp.yaml, simply prevents the creation of privileged Pods. The policy also affects several other control aspects, such as allowing access to all available volumes:
 
-4. kubectl apply -f psp.yaml
+4. kubectl apply -f psp.yml
 
 # Authorizing policies
 
@@ -56,15 +56,15 @@ The subjects field specifies to which accounts the ClusterRole is bound in the r
 
 Below deployment will work and create game-api deployment where pod security works perfectly.
 
-8. kubectl apply -f game-api\k8s\k8s.yaml
+8. kubectl apply -f game-api/k8s/k8s.yaml
 
-But below deployment will not work as it does not ave build-robot service account attached. So it will not be able to schedule pod.
+But below deployment will not work as it does not have build-robot service account attached. So it will not be able to schedule pod.
 
 9. kubectl apply -f game-api\k8s\k8s-without-service-account
 
 Reference screen shot 1 & 2
 
-## seccomp
+## seccomp  - it did not work
 
 It is secure compute mode.
 
